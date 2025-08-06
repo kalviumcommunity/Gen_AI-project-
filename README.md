@@ -1,52 +1,57 @@
-# Gen_AI-project-
 # 🤖 LaughRx – The AI Roast Doctor
 
- “Where your symptoms meet sarcasm, and you leave healthier AND humbled.”
-
-**LaughRx** is a quirky, intelligent AI chatbot that turns everyday health complaints into stand-up comedy followed by real medical advice. It's like talking to a doctor… if the doctor were a roast comedian with a medical degree.
+> "Because laughter *might* not cure everything, but at least you'll leave smiling."
 
 ---
 
-##  Features
+## 🩺 Project Overview
 
--  Hilarious roast responses for your lifestyle choices
--  Accurate medical advice using Function Calling
--  Optional RAG (Retrieval-Augmented Generation) from verified sources
--  Friendly chat UI for web or mobile
--  Safe and informative first-aid-level symptom checker
+**LaughRx** is an AI-powered chatbot that turns health symptom checks into stand-up comedy acts. Users share symptoms in plain English, and in return, the bot:
 
----
+- 🔥 Roasts their life choices (yes, caffeine counts as a food group apparently)
+- 💊 Delivers **real medical advice** with structured, accurate diagnoses
+- 🧠 Uses LLMs, Function Calling, and optionally Retrieval-Augmented Generation (RAG)
 
-##  Example
-
-**User:** 
-> "I feel tired all day and can't focus."
-
-**LaughRx:**  
-> “Wow, sounds like someone tried to survive on 4 hours of sleep and bad decisions again. Classic.”  
-> **Diagnosis:** Fatigue (Possibly due to sleep deprivation)  
-> **Advice:** Try regular sleep cycles, hydration, and screen detox.
+Aimed at making self-diagnosis **fun, safe, and informative**, LaughRx is ideal for users seeking light-hearted clarity on minor symptoms.
 
 ---
 
-## 🛠️ Tech Stack
+## 🧠 How It Works
 
-| Layer       | Technology                    |
-|-------------|-------------------------------|
-| Frontend    | React.js OR HTML/CSS          |
-| Backend     | Node.js + Express             |
-| AI Engine   | OpenAI GPT-4 (Function Calling) |
-| Data Source | Mock JSON / Medical APIs      |
-| Optional    | LangChain (RAG), Whisper (STT) |
+1. **User Input**:  
+   “I have a headache and blurry vision.”
+
+2. **System + User Prompting**:  
+   The LLM is instructed to behave like a sarcastic doctor first, then offer legit medical advice.
+
+3. **Function Calling**:  
+   Calls `getMedicalAdvice(symptom)` to fetch accurate, structured health insights.
+
+4. **Structured Output**:  
+   Returns a roast, probable diagnosis, and first-aid level advice in clean JSON format.
+
+5. **Optional RAG** (Extendable):  
+   Uses LangChain to pull verified health data from sources like NHS, Mayo Clinic, or MedlinePlus for freshness and factual support.
 
 ---
 
-## 🔧 How It Works
+## 🛠 Tech Stack
 
-1. **User Input**: Describes symptoms in plain English.
-2. **AI Prompt**: Injects humor and context into the request.
-3. **Function Calling**: Calls `getMedicalAdvice(symptom)` to fetch real advice.
-4. **Optional RAG**: Pulls updated tips from sources like NHS or MedlinePlus.
-5. **Structured Output**: Returns a roast + real diagnosis + treatment advice.
+| Layer      | Technology                        |
+|------------|-----------------------------------|
+| Frontend   | React.js / Vite / Tailwind (Chat UI) |
+| Backend    | Node.js + Express.js              |
+| AI Model   | OpenAI GPT-4 (with Function Calling) |
+| Data       | Mock DB / JSON or RAG (LangChain) |
+| Optional   | Whisper (voice input), Text-to-Speech, Roast Meter |
 
+---
 
+## 📦 API Sample Response
+
+```json
+{
+  "roast": "Oh look, another human running on 3 hours of sleep and vibes.",
+  "diagnosis": "Likely sleep deprivation or eye strain.",
+  "advice": "Try reducing screen time, hydrate, and fix your sleep cycle."
+}
