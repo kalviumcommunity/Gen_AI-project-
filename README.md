@@ -1,57 +1,65 @@
 # 🤖 LaughRx – The AI Roast Doctor
 
-> "Because laughter *might* not cure everything, but at least you'll leave smiling."
+**LaughRx** is a humorous AI-powered chatbot that turns your symptoms into comedy — while giving you legit medical advice.  
+The twist? You tell it your problems (like “I have a headache”), and it responds with:
+
+- A **funny roast** about your life choices 
+- **Actual health tips** using structured, AI-generated medical insights 
+
+It's where WebMD meets stand-up comedy.
 
 ---
 
-## 🩺 Project Overview
+## Project Goals
 
-**LaughRx** is an AI-powered chatbot that turns health symptom checks into stand-up comedy acts. Users share symptoms in plain English, and in return, the bot:
+This project explores the power of **Large Language Models (LLMs)** using the latest techniques like:
 
-- 🔥 Roasts their life choices (yes, caffeine counts as a food group apparently)
-- 💊 Delivers **real medical advice** with structured, accurate diagnoses
-- 🧠 Uses LLMs, Function Calling, and optionally Retrieval-Augmented Generation (RAG)
+- Prompt engineering  
+- Structured JSON outputs  
+- Function calling for dynamic advice  
+- Optional RAG (Retrieval-Augmented Generation) for factual answers  
 
-Aimed at making self-diagnosis **fun, safe, and informative**, LaughRx is ideal for users seeking light-hearted clarity on minor symptoms.
-
----
-
-## 🧠 How It Works
-
-1. **User Input**:  
-   “I have a headache and blurry vision.”
-
-2. **System + User Prompting**:  
-   The LLM is instructed to behave like a sarcastic doctor first, then offer legit medical advice.
-
-3. **Function Calling**:  
-   Calls `getMedicalAdvice(symptom)` to fetch accurate, structured health insights.
-
-4. **Structured Output**:  
-   Returns a roast, probable diagnosis, and first-aid level advice in clean JSON format.
-
-5. **Optional RAG** (Extendable):  
-   Uses LangChain to pull verified health data from sources like NHS, Mayo Clinic, or MedlinePlus for freshness and factual support.
+All while keeping the experience fun and engaging.
 
 ---
 
-## 🛠 Tech Stack
+##  Core Concepts Implemented
 
-| Layer      | Technology                        |
-|------------|-----------------------------------|
-| Frontend   | React.js / Vite / Tailwind (Chat UI) |
-| Backend    | Node.js + Express.js              |
-| AI Model   | OpenAI GPT-4 (with Function Calling) |
-| Data       | Mock DB / JSON or RAG (LangChain) |
-| Optional   | Whisper (voice input), Text-to-Speech, Roast Meter |
+### 1. Prompting
+
+**How we use it:**
+
+- We use **custom system prompts** to define the bot’s personality.
+- The prompt tells the LLM to:
+  - Roast the user **in a playful tone**
+  - Give **actual medical advice** only from verified sources or function output
+  - Follow JSON structure for reliable parsing
+
+**Example system prompt:**
+> “You are a humorous AI doctor. First, lightly roast the user's symptoms. Then provide real medical advice in a JSON format. Stay funny but factual.”
+
+This helps control the behavior of the AI and ensures consistent tone + accuracy.
 
 ---
 
-## 📦 API Sample Response
+### 2. Structured Output
 
+**How we use it:**
+
+- Every response is returned in a structured **JSON format** with 3 fields:
+  - `roast` (string)
+  - `diagnosis` (string)
+  - `advice` (string)
+
+This format ensures:
+- Frontend can **reliably render** each section separately
+- Easy integration with mobile apps or other clients
+- Future compatibility with databases for storing advice logs
+
+**Example Output:**
 ```json
 {
-  "roast": "Oh look, another human running on 3 hours of sleep and vibes.",
-  "diagnosis": "Likely sleep deprivation or eye strain.",
-  "advice": "Try reducing screen time, hydrate, and fix your sleep cycle."
+  "roast": "Let me guess — you've had coffee, but not water today?",
+  "diagnosis": "Likely dehydration or tension headache",
+  "advice": "Drink water, reduce screen time, and rest. Consult a doctor if it persists."
 }
