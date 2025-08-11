@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaughRx - Zero Shot Prompting Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .concept-box {
+            background: #f0fff4;
+            border-left: 5px solid #38a169;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .zero-shot-demo {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+        
+        .test-case {
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .prompt-display {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+        
+        .response-simulation {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+        
+        .demo-button {
+            background: #9f7aea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        
+        .demo-button:hover {
+            background: #805ad5;
+        }
+        
+        .interactive-section {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+        
+        .symptom-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        
+        .key-points {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #cbd5e0;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: #edf2f7;
+            font-weight: bold;
+        }
+        
+        .pros {
+            color: #38a169;
+        }
+        
+        .cons {
+            color: #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 LaughRx - Zero Shot Prompting Demo</h1>
+        <p class="subtitle">AI responds to ANY symptom without seeing examples first!</p>
+        
+        <div class="concept-box">
+            <h2>🤔 What is Zero Shot Prompting?</h2>
+            <p><strong>Zero Shot</strong> means the AI can handle tasks it has never seen examples of before - just based on clear instructions.</p>
+            <p>For LaughRx, this means our AI doctor can roast and advise on <em>any</em> symptom without being pre-programmed with specific responses!</p>
+            <ul>
+                <li>✅ <strong>No examples needed</strong> - AI figures it out from system prompt</li>
+                <li>✅ <strong>Infinite scalability</strong> - handles any symptom combination</li>
+                <li>✅ <strong>Consistent personality</strong> - same humor style for all responses</li>
+                <li>✅ <strong>Creative responses</strong> - unique roasts every time</li>
+            </ul>
+        </div>
+
+        <div class="zero-shot-demo">
+            <h3>🧪 Zero Shot Test Cases</h3>
+            <p>Watch how the same system prompt handles completely different symptoms:</p>
+            
+            <div class="test-case">
+                <h4>Test Case 1: "I have a headache"</h4>
+                <button class="demo-button" onclick="showTestCase(1)">Show Zero Shot Response</button>
+                <div id="test1" style="display:none;">
+                    <div class="prompt-display">SYSTEM PROMPT: You are LaughRx, respond to ANY symptom with roast → diagnosis → advice...
+
+USER PROMPT: Please help me with these symptoms: I have a headache</div>
+                    <div class="response-simulation">
+                        <strong>🤖 LaughRx Zero Shot Response:</strong><br>
+                        "Oh, let me guess - you've been best friends with your screen today and water is just a distant memory? 🖥️💧 This sounds like a classic tension headache, probably from dehydration or eye strain. Here's your prescription: drink some H2O (revolutionary!), take a screen break, and maybe step outside. If this keeps happening, consult a real doctor!"
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-case">
+                <h4>Test Case 2: "I can't sleep at night" (with context)</h4>
+                <button class="demo-button" onclick="showTestCase(2)">Show Zero Shot Response</button>
+                <div id="test2" style="display:none;">
+                    <div class="prompt-display">SYSTEM PROMPT: [Same as above - no examples given]
+
+USER PROMPT: Please help me with these symptoms: I can't sleep at night
+Additional information: age: 28, job: software developer</div>
+                    <div class="response-simulation">
+                        <strong>🤖 LaughRx Zero Shot Response:</strong><br>
+                        "Ah, the classic 'I'll just scroll for 5 more minutes at midnight' syndrome! 📱🌙 As a software developer, I bet your brain is still debugging code when you hit the pillow. Try the 3-2-1 rule: no screens 3 hours before bed, no food 2 hours before, and 1 hour of relaxing activities. If insomnia persists, see a healthcare professional!"
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-case">
+                <h4>Test Case 3: "My back hurts from sitting all day"</h4>
+                <button class="demo-button" onclick="showTestCase(3)">Show Zero Shot Response</button>
+                <div id="test3" style="display:none;">
+                    <div class="prompt-display">SYSTEM PROMPT: [Same as above - still no examples!]
+
+USER PROMPT: Please help me with these symptoms: My back hurts from sitting all day</div>
+                    <div class="response-simulation">
+                        <strong>🤖 LaughRx Zero Shot Response:</strong><br>
+                        "Welcome to the 'human pretzel' club! Your spine is probably shaped like a question mark from all that desk sitting. 🪑😵 This is classic postural strain from prolonged sitting. Time for some movement therapy: stand every 30 minutes, do some stretches, and maybe invest in ergonomic furniture. If pain continues, consult a healthcare provider!"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-section">
+            <h3>🎮 Try Your Own Zero Shot Prompt!</h3>
+            <p>Enter any symptom and see how our zero-shot system would handle it:</p>
+            <input type="text" class="symptom-input" id="customSymptom" placeholder="Enter your symptoms (e.g., 'I feel dizzy when I stand up')">
+            <button class="demo-button" onclick="generateZeroShotResponse()">Generate Zero Shot Response</button>
+            <div id="customResponse" style="display:none;" class="response-simulation">
+                <strong>🤖 Predicted LaughRx Response Pattern:</strong>
+                <div id="responseContent"></div>
+            </div>
+        </div>
+
+        <div class="key-points">
+            <h3>🎯 Zero Shot vs Other Approaches</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Approach</th>
+                    <th>How it Works</th>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+                <tr>
+                    <td><strong>Zero Shot</strong></td>
+                    <td>AI responds based only on system instructions</td>
+                    <td class="pros">• Handles any input<br>• No examples needed<br>• Highly scalable</td>
+                    <td class="cons">• Less predictable<br>• Requires excellent prompts</td>
+                </tr>
+                <tr>
+                    <td><strong>Pre-programmed</strong></td>
+                    <td>Fixed responses for specific symptoms</td>
+                    <td class="pros">• Very predictable<br>• Easy to control</td>
+                    <td class="cons">• Limited to known symptoms<br>• Not scalable</td>
+                </tr>
+                <tr>
+                    <td><strong>One Shot</strong></td>
+                    <td>AI learns from one example</td>
+                    <td class="pros">• More predictable than zero shot<br>• Good balance</td>
+                    <td class="cons">• Still needs good examples<br>• More complex prompts</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="concept-box">
+            <h3>🚀 Why Zero Shot is Perfect for LaughRx:</h3>
+            <ul>
+                <li><strong>Unlimited Symptoms:</strong> Users can describe any health concern</li>
+                <li><strong>Creative Roasts:</strong> AI generates unique jokes for each situation</li>
+                <li><strong>Consistent Personality:</strong> Always maintains the humorous doctor character</li>
+                <li><strong>Scalable Solution:</strong> No need to pre-write thousands of responses</li>
+                <li><strong>Context Awareness:</strong> Adapts roasts based on user information</li>
+            </ul>
+            
+            <h4>🔄 Next Concepts to Implement:</h4>
+            <ol>
+                <li><strong>Structured Output:</strong> JSON format for reliable frontend parsing</li>
+                <li><strong>Temperature Control:</strong> Adjusting response creativity and randomness</li>
+                <li><strong>One Shot Prompting:</strong> Providing examples to guide responses</li>
+                <li><strong>Function Calling:</strong> Dynamic advice based on symptom analysis</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function showTestCase(caseNum) {
+            const testDiv = document.getElementById(`test${caseNum}`);
+            if (testDiv.style.display === 'none') {
+                testDiv.style.display = 'block';
+            } else {
+                testDiv.style.display = 'none';
+            }
+        }
+
+        function generateZeroShotResponse() {
+            const symptom = document.getElementById('customSymptom').value.trim();
+            const responseDiv = document.getElementById('customResponse');
+            const contentDiv = document.getElementById('responseContent');
+            
+            if (!symptom) {
+                alert('Please enter a symptom first!');
+                return;
+            }
+            
+            // Simulate zero-shot response pattern
+            const roastPatterns = [
+                "Let me guess - your lifestyle choices are staging a rebellion?",
+                "Ah, the classic 'I'll ignore my body until it screams' approach!",
+                "Your body is sending you a strongly worded complaint letter!",
+                "Welcome to the consequences of modern living!",
+                "I see someone's been making interesting life decisions!"
+            ];
+            
+            const diagnosisPatterns = [
+                "This sounds like a common issue related to lifestyle factors.",
+                "Likely caused by stress, poor habits, or environmental factors.",
+                "Probably your body's way of telling you to make some changes.",
+                "Could be related to diet, sleep, posture, or stress levels."
+            ];
+            
+            const advicePatterns = [
+                "Try some basic lifestyle adjustments and monitor your symptoms.",
+                "Focus on the fundamentals: sleep, hydration, movement, and stress management.",
+                "Make some healthy changes and see if symptoms improve.",
+                "Address the root cause with better habits and self-care."
+            ];
+            
+            const randomRoast = roastPatterns[Math.floor(Math.random() * roastPatterns.length)];
+            const randomDiagnosis = diagnosisPatterns[Math.floor(Math.random() * diagnosisPatterns.length)];
+            const randomAdvice = advicePatterns[Math.floor(Math.random() * advicePatterns.length)];
+            
+            contentDiv.innerHTML = `
+                <strong>Symptom:</strong> "${symptom}"<br><br>
+                <strong>🎭 Roast:</strong> ${randomRoast}<br><br>
+                <strong>🔍 Diagnosis:</strong> ${randomDiagnosis}<br><br>
+                <strong>💡 Advice:</strong> ${randomAdvice} Always consult a healthcare professional if symptoms persist or worsen.<br><br>
+                <em>Note: This is a simulated response showing the zero-shot pattern. A real AI would generate more specific and contextual content!</em>
+            `;
+            
+            responseDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
