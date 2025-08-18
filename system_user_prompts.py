@@ -12,7 +12,7 @@ User Prompt: Contains the actual user input/symptoms
 import os
 from typing import Dict, Any
 
-class LaughRxPromptSystem:
+class LaughRxPrompts:
     def __init__(self):
         self.system_prompt = self._create_system_prompt()
     
@@ -122,7 +122,7 @@ def main():
     """
     Main function to demonstrate the prompt system
     """
-    prompt_system = LaughRxPromptSystem()
+    prompt_system = LaughRxPrompts()
     prompt_system.demonstrate_prompts()
     
     print("\n" + "=" * 50)
