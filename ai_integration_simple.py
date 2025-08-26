@@ -67,13 +67,69 @@ Example response format:
 💡 ADVICE: [Practical health advice]
 ⚠️ DISCLAIMER: Always consult a healthcare professional for persistent or serious symptoms."""
     
-    def generate_response(self, symptoms: str) -> dict:
+    def generate_response(self, symptoms: str, dynamic_options: dict | None = None) -> dict:
         """
-        Generate AI response for symptoms
+        Generate AI response for symptoms with optional dynamic prompting.
+        dynamic_options keys (all optional):
+          - system_override: str
+          - tone: str
+          - persona: str
+          - language: str
+          - extra_instructions: str
+          - user_context: dict
+          - constraints: list[str]
+          - examples: list[dict] where each dict can have keys like {"user": str, "assistant": str}
         """
         try:
+            dynamic_options = dynamic_options or {}
+
+            # Choose system prompt (override if provided)
+            system_prompt = dynamic_options.get("system_override") or self.system_prompt
+
+            # Build dynamic context block
+            dynamic_lines = []
+            tone = dynamic_options.get("tone")
+            persona = dynamic_options.get("persona")
+            language = dynamic_options.get("language")
+            extra_instructions = dynamic_options.get("extra_instructions")
+            user_context = dynamic_options.get("user_context") or {}
+            constraints = dynamic_options.get("constraints") or []
+            examples = dynamic_options.get("examples") or []
+
+            if tone:
+                dynamic_lines.append(f"- Desired tone: {tone}")
+            if persona:
+                dynamic_lines.append(f"- Adopt this persona: {persona}")
+            if language:
+                dynamic_lines.append(f"- Respond in language: {language}")
+            if user_context and isinstance(user_context, dict):
+                # Add a compact view of context
+                context_pairs = ", ".join([f"{k}={v}" for k, v in list(user_context.items())[:10]])
+                dynamic_lines.append(f"- User context: {context_pairs}")
+            if constraints:
+                dynamic_lines.append("- Constraints:")
+                for c in constraints[:10]:
+                    dynamic_lines.append(f"  * {c}")
+            if extra_instructions:
+                dynamic_lines.append(f"- Extra instructions: {extra_instructions}")
+
+            examples_block = ""
+            if examples:
+                formatted = []
+                for ex in examples[:5]:
+                    u = ex.get("user") or ex.get("input") or ""
+                    a = ex.get("assistant") or ex.get("output") or ""
+                    formatted.append(f"User: {u}\nAssistant: {a}")
+                examples_block = "\n\nFew-shot examples:\n" + "\n\n".join(formatted)
+
+            dynamic_block = ("\n\nDYNAMIC CONTEXT:\n" + "\n".join(dynamic_lines)) if dynamic_lines else ""
+
             # Create full prompt
-            full_prompt = f"{self.system_prompt}\n\nUser symptoms: {symptoms}\n\nPlease respond in the LaughRx format:"
+            full_prompt = (
+                f"{system_prompt}{dynamic_block}{examples_block}\n\n"
+                f"User symptoms: {symptoms}\n\n"
+                f"Please respond in the LaughRx format:"
+            )
             
             # Generate response
             response = self.model.generate_content(

@@ -55,6 +55,14 @@ async def startup_event():
 class SymptomRequest(BaseModel):
     symptoms: str
     user_context: Optional[Dict[str, Any]] = None
+    # Dynamic prompting controls (all optional)
+    tone: Optional[str] = None
+    persona: Optional[str] = None
+    language: Optional[str] = None
+    extra_instructions: Optional[str] = None
+    constraints: Optional[list[str]] = None
+    examples: Optional[list[Dict[str, str]]] = None
+    system_override: Optional[str] = None
 
 class HealthResponse(BaseModel):
     success: bool
@@ -100,7 +108,20 @@ async def analyze_symptoms(request: SymptomRequest):
     
     try:
         # Generate AI response
-        result = ai_client.generate_response(request.symptoms)
+        dynamic_options = {
+            "tone": request.tone,
+            "persona": request.persona,
+            "language": request.language,
+            "extra_instructions": request.extra_instructions,
+            "user_context": request.user_context,
+            "constraints": request.constraints,
+            "examples": request.examples,
+            "system_override": request.system_override,
+        }
+        # Remove None values to keep prompt clean
+        dynamic_options = {k: v for k, v in dynamic_options.items() if v is not None}
+
+        result = ai_client.generate_response(request.symptoms, dynamic_options)
         
         if result["success"]:
             return HealthResponse(
@@ -112,7 +133,8 @@ async def analyze_symptoms(request: SymptomRequest):
                     "response_time": "< 2 seconds",
                     "cost": "free tier",
                     "top_p": getattr(ai_client, "top_p", None),
-                    "top_k": getattr(ai_client, "top_k", None)
+                    "top_k": getattr(ai_client, "top_k", None),
+                    "dynamic": list(dynamic_options.keys())
                 }
             )
         else:
