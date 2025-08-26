@@ -110,7 +110,8 @@ async def analyze_symptoms(request: SymptomRequest):
                 metadata={
                     "model": "gemini-1.5-flash",
                     "response_time": "< 2 seconds",
-                    "cost": "free tier"
+                    "cost": "free tier",
+                    "top_p": getattr(ai_client, "top_p", None)
                 }
             )
         else:
