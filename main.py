@@ -111,7 +111,8 @@ async def analyze_symptoms(request: SymptomRequest):
                     "model": "gemini-1.5-flash",
                     "response_time": "< 2 seconds",
                     "cost": "free tier",
-                    "top_p": getattr(ai_client, "top_p", None)
+                    "top_p": getattr(ai_client, "top_p", None),
+                    "top_k": getattr(ai_client, "top_k", None)
                 }
             )
         else:
