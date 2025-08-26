@@ -19,8 +19,21 @@ class LaughRxAISimple:
         if not api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables")
         
+        # Sampling config (Top P for nucleus sampling)
+        # Read from env, default to 0.9; clamp to (0, 1]
+        try:
+            top_p_env = float(os.getenv("TOP_P", "0.9"))
+            self.top_p = max(0.0, min(1.0, top_p_env))
+            # Avoid exactly 0 which disables sampling; keep small epsilon
+            if self.top_p == 0.0:
+                self.top_p = 0.01
+        except Exception:
+            self.top_p = 0.9
+        
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        print(f"🎯 Generation top_p set to: {self.top_p}")
         
         # LaughRx system prompt
         self.system_prompt = """You are LaughRx, a humorous AI doctor with a unique personality:
@@ -62,6 +75,7 @@ Example response format:
                 full_prompt,
                 generation_config=genai.types.GenerationConfig(
                     temperature=0.7,
+                    top_p=self.top_p,
                     max_output_tokens=500,
                 )
             )
