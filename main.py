@@ -63,6 +63,8 @@ class SymptomRequest(BaseModel):
     constraints: Optional[list[str]] = None
     examples: Optional[list[Dict[str, str]]] = None
     system_override: Optional[str] = None
+    # Stop sequences (optional, overrides default env value)
+    stop_sequences: Optional[list[str]] = None
 
 class HealthResponse(BaseModel):
     success: bool
@@ -117,6 +119,7 @@ async def analyze_symptoms(request: SymptomRequest):
             "constraints": request.constraints,
             "examples": request.examples,
             "system_override": request.system_override,
+            "stop_sequences": request.stop_sequences,
         }
         # Remove None values to keep prompt clean
         dynamic_options = {k: v for k, v in dynamic_options.items() if v is not None}
@@ -134,6 +137,7 @@ async def analyze_symptoms(request: SymptomRequest):
                     "cost": "free tier",
                     "top_p": getattr(ai_client, "top_p", None),
                     "top_k": getattr(ai_client, "top_k", None),
+                    "stop_sequences": dynamic_options.get("stop_sequences", None),
                     "dynamic": list(dynamic_options.keys())
                 }
             )

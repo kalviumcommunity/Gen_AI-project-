@@ -34,11 +34,20 @@ class LaughRxAISimple:
             self.top_k = max(0, top_k_env)
         except Exception:
             self.top_k = 40
+
+        # Default stop sequences from env (comma-separated)
+        raw_stops = os.getenv("STOP_SEQUENCES", "")
+        if raw_stops.strip():
+            self.stop_sequences_default = [s.strip() for s in raw_stops.split(",") if s.strip()]
+        else:
+            self.stop_sequences_default = []
         
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-1.5-flash')
         
         print(f"🎯 Generation top_p set to: {self.top_p}, top_k set to: {self.top_k}")
+        if self.stop_sequences_default:
+            print(f"⛔ Stop sequences set: {self.stop_sequences_default}")
         
         # LaughRx system prompt
         self.system_prompt = """You are LaughRx, a humorous AI doctor with a unique personality:
@@ -132,12 +141,18 @@ Example response format:
             )
             
             # Generate response
+            # Allow per-request stop sequences override
+            stop_sequences = dynamic_options.get("stop_sequences") if isinstance(dynamic_options, dict) else None
+            if not stop_sequences:
+                stop_sequences = self.stop_sequences_default or None
+
             response = self.model.generate_content(
                 full_prompt,
                 generation_config=genai.types.GenerationConfig(
                     temperature=0.7,
                     top_p=self.top_p,
                     top_k=self.top_k,
+                    stop_sequences=stop_sequences,
                     max_output_tokens=500,
                 )
             )
